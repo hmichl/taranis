@@ -1,4 +1,8 @@
 # taranis
 LUA Scripts for FrSKY Taranis Transmitter
 
-This is a first edit of this file in a new branch called "readme-edit".
+
+Collection of hopefully useful Telemetry Scripts for the FrSKY Taranis X9D(+) Transmitter
+
+e-segl.lua  useful for gliders with electrical motor - stable
+moto.lua    useful for motorplanes with electrical engine - not yet mature
