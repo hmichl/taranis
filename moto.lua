@@ -58,11 +58,10 @@ local function bg()
   -- ID 15, Sensor 0x20  - average current
   setTelemetryValue( 34, 0, 15, ACur, 9, 0, "ACur")  
   if getValue("ls46") >= 100 then  -- reset flight
-  --  TAlt = 0
+  --  nothing to do?
   end
   if getValue("ls47") >= 100 then  -- reset battery
-  --  MAlt = 0
-  --  TAlt = 0
+    ACur = 0
     Battlow = 0
   end
   if getValue("ls50") >= 100 then   -- battery voltage low
