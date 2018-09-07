@@ -105,7 +105,7 @@ local function run(event)
   lcd.drawText(160, 53, string.format("%d m", MAlt), SMLSIZE+RIGHT)
 -- Voltages
   lcd.drawText( 210, 2, string.format("%3.1fV+", getValue("VFAS+")), MIDSIZE+RIGHT)
-  lcd.drawText( 204, 17, string.format("% 3.1fV", getValue("VFAS")), MIDSIZE+RIGHT)
+  lcd.drawText( 204, 17, string.format("%3.1fV", getValue("VFAS")), MIDSIZE+RIGHT)
   if Battlow == 1 then   -- battery voltage is or was low
     lcd.drawText( 210, 32, string.format("%3.1fV-", getValue("VFAS-")), MIDSIZE+RIGHT+BLINK+INVERS)
   else

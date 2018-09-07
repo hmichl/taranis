@@ -11,7 +11,8 @@
 --   - motor time
 --   - maximum current
 --   - average current
---   - ???
+--   - maximum revolutions per minute
+--   - current revolutions per minute
 -- the right side of the display shows max / current and lowest voltage
 -- bottom right shows used capacity of battery
 --
@@ -88,17 +89,19 @@ local function run(event)
 -- Altitude
   lcd.drawNumber(85, 22, Curr, XXLSIZE+RIGHT)
   lcd.drawText(lcd.getLastPos(), 48, " A", MIDSIZE)
-  lcd.drawText(105, 23, "Time", SMLSIZE)
-  lcd.drawText(160, 23, string.format("%02d:%02d", T1/60, T1%60), SMLSIZE+RIGHT)
-  lcd.drawText(105, 33, "Max", SMLSIZE)
-  lcd.drawText(160, 33, string.format("%d A", getValue("Curr+")), SMLSIZE+RIGHT)
-  lcd.drawText(105, 43, "Avg", SMLSIZE)
-  lcd.drawText(160, 43, string.format("%2.1f A", ACur), SMLSIZE+RIGHT)
-  --lcd.drawText(105, 53, "Moto", SMLSIZE)
-  --lcd.drawText(160, 53, string.format("%d m", MAlt), SMLSIZE+RIGHT)
--- Voltages
+  lcd.drawText(105, 17, "Time", SMLSIZE)
+  lcd.drawText(160, 17, string.format("%02d:%02d", T1/60, T1%60), SMLSIZE+RIGHT)
+  lcd.drawText(105, 27, "Max", SMLSIZE)
+  lcd.drawText(160, 27, string.format("%d A", getValue("Curr+")), SMLSIZE+RIGHT)
+  lcd.drawText(105, 37, "Avg", SMLSIZE)
+  lcd.drawText(160, 37, string.format("%2.1f A", ACur), SMLSIZE+RIGHT)
+  lcd.drawText(105, 47, "RPMax", SMLSIZE)
+  lcd.drawText(160, 47, string.format("%d", getValue("RPM+")), SMLSIZE+RIGHT)
+  lcd.drawText(105, 57, "RPM", SMLSIZE)
+  lcd.drawText(160, 57, string.format("%d", getValue("RPM")), SMLSIZE+RIGHT)
+---- Voltages
   lcd.drawText( 210, 2, string.format("%3.1fV+", getValue("VFAS+")), MIDSIZE+RIGHT)
-  lcd.drawText( 204, 17, string.format("% 3.1fV", getValue("VFAS")), MIDSIZE+RIGHT)
+  lcd.drawText( 204, 17, string.format("%3.1fV", getValue("VFAS")), MIDSIZE+RIGHT)
   if Battlow == 1 then   -- battery voltage is or was low
     lcd.drawText( 210, 32, string.format("%3.1fV-", getValue("VFAS-")), MIDSIZE+RIGHT+BLINK+INVERS)
   else
