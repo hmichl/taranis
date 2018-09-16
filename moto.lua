@@ -3,11 +3,11 @@
 -- LUA-telemetry script for FrSKY Taranis X9D[+]
 --
 -- This telemetry script shows basic information which is 
--- useful for electric motor planes
+-- useful for electric motor planes and helicopters
 --
 -- top left is clock / flightmode
 -- bottom left current current in biggest possible font
--- right of the current altitude it shows
+-- right of the current it shows
 --   - motor time
 --   - maximum current
 --   - average current
@@ -35,7 +35,7 @@
 --
 -- Script delivers the following telemetry values 
 --   (detect by searching for sensors while script is running)
--- ACur - average current during flight (returns zero if time=zero)
+-- ACur - average current during flight (returns zero if timer1=zero)
 --
 --
 
