@@ -1,6 +1,7 @@
 -- moto.lua
 --
 -- LUA-telemetry script for FrSKY Taranis X9D[+]
+-- written by Harald Michl
 --
 -- This telemetry script shows basic information which is 
 -- useful for electric motor planes and helicopters
