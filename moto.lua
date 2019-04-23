@@ -86,7 +86,7 @@ local function run(event)
   else
     lcd.drawText( 60, 2, fmt, MIDSIZE)
   end
--- Altitude
+-- Current
   lcd.drawNumber(85, 22, Curr, XXLSIZE+RIGHT)
   lcd.drawText(lcd.getLastPos(), 48, " A", MIDSIZE)
   lcd.drawText(105, 17, "Time", SMLSIZE)
