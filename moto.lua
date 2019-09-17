@@ -79,13 +79,14 @@ local function run(event)
 
   fmn,fmt = getFlightMode()
 
--- draw clock / flightmode
-  lcd.drawText( 2, 2, string.format("%02d:%02d:%02d", datenow.hour, datenow.min, datenow.sec), MIDSIZE)
-  if fmt == "" then
-    lcd.drawText( 60, 2, string.format("Flugphase %2d", fmn), MIDSIZE)
-  else
-    lcd.drawText( 60, 2, fmt, MIDSIZE)
-  end
+-- draw tx-voltage / clock / flightmode
+lcd.drawText( 1, 2, string.format("%2.1fV", getValue("tx-voltage")), MIDSIZE)
+lcd.drawText( 33, 2, string.format("%02d:%02d", datenow.hour, datenow.min), MIDSIZE)
+if fmt == "" then
+  lcd.drawText( 70, 2, string.format("Flugphase %2d", fmn), MIDSIZE)
+else
+  lcd.drawText( 70, 2, fmt, MIDSIZE)
+end
 -- Current
   lcd.drawNumber(85, 22, Curr, XXLSIZE+RIGHT)
   lcd.drawText(lcd.getLastPos(), 48, " A", MIDSIZE)

@@ -33,6 +33,7 @@
 --   (detect by searching for sensors while script is running)
 -- TAlt - sum of altitude gained without motor
 -- MAlt - sum of altitude gained with motor
+-- MAFl - sum of altitude gained with motor per flight
 --
 
 
@@ -41,6 +42,7 @@ local function init()
   OAlt = 0
   TAlt = 0
   MAlt = 0
+  MAFl = 0
   Battlow = 0
 end
 
@@ -53,6 +55,7 @@ local function bg()
   if Alt >= OAlt then   -- did the height increase?
     if getValue("ls45") >= 100 then  -- motor running
       MAlt = MAlt + (Alt - OAlt)
+      MAFl = MAFl + (Alt - OAlt)
     else                             -- we are in "quiet mode" :-)
       TAlt = TAlt + (Alt - OAlt)
     end
@@ -60,13 +63,17 @@ local function bg()
   OAlt = Alt   -- set old altitude to current
   -- ID 15, Sensor 0x20  - accumulated height without motor
   setTelemetryValue( 32, 0, 15, TAlt, 9, 0, "TAlt")  
-  -- ID 15, Sensor 0x21  - accumulated height with motor
+  -- ID 15, Sensor 0x21  - accumulated height with motor summary
   setTelemetryValue( 33, 0, 15, MAlt, 9, 0, "MAlt")  
+  -- ID 15, Sensor 0x22  - accumulated height with motor per flight
+  setTelemetryValue( 34, 0, 15, MAlt, 9, 0, "MAFl")  
   if getValue("ls46") >= 100 then  -- reset flight
     TAlt = 0
+    MAFl = 0
   end
   if getValue("ls47") >= 100 then  -- reset battery
     MAlt = 0
+    MAFl = 0
     TAlt = 0
     Battlow = 0
   end
@@ -84,24 +91,27 @@ local function run(event)
 
   fmn,fmt = getFlightMode()
 
--- draw clock / flightmode
-  lcd.drawText( 2, 2, string.format("%02d:%02d:%02d", datenow.hour, datenow.min, datenow.sec), MIDSIZE)
+-- draw tx-voltage / clock / flightmode
+  lcd.drawText( 1, 2, string.format("%2.1fV", getValue("tx-voltage")), MIDSIZE)
+  lcd.drawText( 33, 2, string.format("%02d:%02d", datenow.hour, datenow.min), MIDSIZE)
   if fmt == "" then
-    lcd.drawText( 60, 2, string.format("Flugphase %2d", fmn), MIDSIZE)
+    lcd.drawText( 70, 2, string.format("Flugphase %2d", fmn), MIDSIZE)
   else
-    lcd.drawText( 60, 2, fmt, MIDSIZE)
+    lcd.drawText( 70, 2, fmt, MIDSIZE)
   end
 -- Altitude
   lcd.drawNumber(85, 22, Alt, XXLSIZE+RIGHT)
   lcd.drawText(lcd.getLastPos(), 48, " m", MIDSIZE)
-  lcd.drawText(105, 23, "Max", SMLSIZE)
-  lcd.drawText(160, 23, string.format("%d m", AltP), SMLSIZE+RIGHT)
-  lcd.drawText(105, 33, "Min", SMLSIZE)
-  lcd.drawText(160, 33, string.format("%d m", AltM), SMLSIZE+RIGHT)
-  lcd.drawText(105, 43, "Ther", SMLSIZE)
-  lcd.drawText(160, 43, string.format("%d m", TAlt), SMLSIZE+RIGHT)
-  lcd.drawText(105, 53, "Moto", SMLSIZE)
-  lcd.drawText(160, 53, string.format("%d m", MAlt), SMLSIZE+RIGHT)
+  lcd.drawText(105, 17, "Max", SMLSIZE)
+  lcd.drawText(160, 17, string.format("%d m", AltP), SMLSIZE+RIGHT)
+  lcd.drawText(105, 27, "Min", SMLSIZE)
+  lcd.drawText(160, 27, string.format("%d m", AltM), SMLSIZE+RIGHT)
+  lcd.drawText(105, 37, "Ther", SMLSIZE)
+  lcd.drawText(160, 37, string.format("%d m", TAlt), SMLSIZE+RIGHT)
+  lcd.drawText(105, 47, "MoFl", SMLSIZE)
+  lcd.drawText(160, 47, string.format("%d m", MAFl), SMLSIZE+RIGHT)
+  lcd.drawText(105, 57, "Moto", SMLSIZE)
+  lcd.drawText(160, 57, string.format("%d m", MAlt), SMLSIZE+RIGHT)
 -- Voltages
   lcd.drawText( 210, 2, string.format("%3.1fV+", getValue("VFAS+")), MIDSIZE+RIGHT)
   lcd.drawText( 204, 17, string.format("%3.1fV", getValue("VFAS")), MIDSIZE+RIGHT)
