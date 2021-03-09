@@ -92,15 +92,15 @@ local function run(event)
   fmn,fmt = getFlightMode()
 
 -- draw tx-voltage / clock / flightmode
-  lcd.drawText( 1, 2, string.format("%2.1fV", getValue("tx-voltage")), MIDSIZE)
-  lcd.drawText( 33, 2, string.format("%02d:%02d", datenow.hour, datenow.min), MIDSIZE)
+  lcd.drawText( 1, 2, string.format("%2.1fV", getValue("tx-voltage")), SMLSIZE)
+  lcd.drawText( 33, 2, string.format("%02d:%02d", datenow.hour, datenow.min), SMLSIZE)
   if fmt == "" then
-    lcd.drawText( 70, 2, string.format("Flugphase %2d", fmn), MIDSIZE)
+    lcd.drawText( 70, 2, string.format("Flugphase %2d", fmn), SMLSIZE)
   else
-    lcd.drawText( 70, 2, fmt, MIDSIZE)
+    lcd.drawText( 70, 2, fmt, SMLSIZE)
   end
 -- Altitude
-  lcd.drawNumber(85, 22, Alt, XXLSIZE+RIGHT)
+  lcd.drawNumber(85, 22, Alt, DBLSIZE+RIGHT)
   lcd.drawText(lcd.getLastPos(), 48, " m", MIDSIZE)
   lcd.drawText(105, 17, "Max", SMLSIZE)
   lcd.drawText(160, 17, string.format("%d m", AltP), SMLSIZE+RIGHT)
