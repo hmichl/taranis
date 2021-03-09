@@ -66,7 +66,7 @@ local function bg()
   -- ID 15, Sensor 0x21  - accumulated height with motor summary
   setTelemetryValue( 33, 0, 15, MAlt, 9, 0, "MAlt")  
   -- ID 15, Sensor 0x22  - accumulated height with motor per flight
-  setTelemetryValue( 34, 0, 15, MAlt, 9, 0, "MAFl")  
+  setTelemetryValue( 34, 0, 15, MAFl, 9, 0, "MAFl")  
   if getValue("ls46") >= 100 then  -- reset flight
     TAlt = 0
     MAFl = 0
