@@ -155,7 +155,8 @@ local function run(event)
 
   -- check Telemetry
   if getValue( 'RSSI') <= 1 then
-    lcd.drawText( 5, 15, "  Telemetrie verloren !!!  ", MIDSIZE+BLINK+INVERS)
+    lcd.drawText( 20, 25, "!  Telemetrie !", BLINK+INVERS)
+    lcd.drawText( 20, 34, "!   verloren   !", BLINK+INVERS)
   end
 end
 
