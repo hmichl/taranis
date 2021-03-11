@@ -5,15 +5,19 @@
 -- This telemetry script shows basic information which is 
 -- useful for electric gliders
 --
--- top left is clock / flightmode
--- bottom left altitude in biggest possible font
--- right of the current altitude it shows
+-- top left is clock / flightmode / flighttime
+-- as the display is rather small there exist two subscreens
+-- they can be viewed by long-pressing the joystick up (1) or right (2)
+-- subscreen 1 views
+--   - bottom left altitude in biggest possible font
+--   - the right side of the display shows max / current and lowest voltage
+--   - bottom right shows used capacity of battery
+-- subscreen 2 views
 --   - maximum height
 --   - minimum height
 --   - accumulated height without motor
---   - accumulated height with motor
--- the right side of the display shows max / current and lowest voltage
--- bottom right shows used capacity of battery
+--   - accumulated height with motor during one flight
+--   - accumulated height with motor with one battery
 --
 -- have fun :-)
 -- 
@@ -44,6 +48,7 @@ local function init()
   MAlt = 0
   MAFl = 0
   Battlow = 0
+  Subscreen = 1
 end
 
 local function bg()
@@ -90,42 +95,67 @@ local function run(event)
   lcd.clear()
 
   fmn,fmt = getFlightMode()
+  flighttime = model.getTimer( 0)
+  if event == 68 then
+    Subscreen = 1
+  end
+  if event == 69 then
+    Subscreen = 2
+  end 
 
--- draw tx-voltage / clock / flightmode
-  lcd.drawText( 1, 2, string.format("%2.1fV", getValue("tx-voltage")), SMLSIZE)
-  lcd.drawText( 33, 2, string.format("%02d:%02d", datenow.hour, datenow.min), SMLSIZE)
+-- draw tx-voltage / clock / flightmode / Timer1
+  lcd.drawText( 1, 2, string.format("%2.1fV", getValue("tx-voltage")), 0)
+  lcd.drawText( 25, 2, string.format("%02d:%02d", datenow.hour, datenow.min), 0)
   if fmt == "" then
-    lcd.drawText( 70, 2, string.format("Flugphase %2d", fmn), SMLSIZE)
+    lcd.drawText( 50, 2, string.format("Flugphase %2d", fmn), 0)
   else
-    lcd.drawText( 70, 2, fmt, SMLSIZE)
+    lcd.drawText( 50, 2, fmt, 0)
   end
--- Altitude
-  lcd.drawNumber(85, 22, Alt, DBLSIZE+RIGHT)
-  lcd.drawText(lcd.getLastPos(), 48, " m", MIDSIZE)
-  lcd.drawText(105, 17, "Max", SMLSIZE)
-  lcd.drawText(160, 17, string.format("%d m", AltP), SMLSIZE+RIGHT)
-  lcd.drawText(105, 27, "Min", SMLSIZE)
-  lcd.drawText(160, 27, string.format("%d m", AltM), SMLSIZE+RIGHT)
-  lcd.drawText(105, 37, "Ther", SMLSIZE)
-  lcd.drawText(160, 37, string.format("%d m", TAlt), SMLSIZE+RIGHT)
-  lcd.drawText(105, 47, "MoFl", SMLSIZE)
-  lcd.drawText(160, 47, string.format("%d m", MAFl), SMLSIZE+RIGHT)
-  lcd.drawText(105, 57, "Moto", SMLSIZE)
-  lcd.drawText(160, 57, string.format("%d m", MAlt), SMLSIZE+RIGHT)
--- Voltages
-  lcd.drawText( 210, 2, string.format("%3.1fV+", getValue("VFAS+")), MIDSIZE+RIGHT)
-  lcd.drawText( 204, 17, string.format("%3.1fV", getValue("VFAS")), MIDSIZE+RIGHT)
-  if Battlow == 1 then   -- battery voltage is or was low
-    lcd.drawText( 210, 32, string.format("%3.1fV-", getValue("VFAS-")), MIDSIZE+RIGHT+BLINK+INVERS)
-  else
-    lcd.drawText( 210, 32, string.format("%3.1fV-", getValue("VFAS-")), MIDSIZE+RIGHT)
+  lcd.drawTimer( 90, 2, flighttime.value, TIMEHOUR)
+
+  if Subscreen == 1 then
+    -- Subscreen 1 - normal flight display
+    -- Press "UP"
+    -- Altitude
+    lcd.drawNumber(75, 15, Alt, XXLSIZE+RIGHT)
+    lcd.drawText(lcd.getLastPos(), 47, "m", SMLSIZE)
+    -- Voltages
+    lcd.drawText( 120, 12, string.format("%3.1fV", getValue("VFAS+")), MIDSIZE+RIGHT)
+    lcd.drawText(lcd.getLastPos(), 12, "+", MIDSIZE)
+    lcd.drawText( 120, 25, string.format("%3.1fV", getValue("VFAS")), MIDSIZE+RIGHT)
+    if Battlow == 1 then   -- battery voltage is or was low
+      lcd.drawText( 120, 38, string.format("%3.1fV", getValue("VFAS-")), MIDSIZE+RIGHT+BLINK+INVERS)
+      lcd.drawText(lcd.getLastPos(), 38, "-", MIDSIZE+BLINK+INVERS)
+
+    else
+      lcd.drawText( 120, 38, string.format("%3.1fV", getValue("VFAS-")), MIDSIZE+RIGHT)
+      lcd.drawText(lcd.getLastPos(), 38, "-", MIDSIZE)
+    end
+    -- Capacity
+    lcd.drawNumber(112, 51, getValue("Cnsp"), MIDSIZE+RIGHT)
+    lcd.drawText(lcd.getLastPos(), 55, "mAh", SMLSIZE)
+
   end
--- Used Capacity
-  lcd.drawNumber(194, 47, getValue("Cnsp"), MIDSIZE+RIGHT)
-  lcd.drawText( lcd.getLastPos(), 52, "mAh", SMLSIZE)
--- check Telemetry
+  if Subscreen == 2 then
+    -- Subscreen 2 - statistical data for after-flight analysis  
+    -- Press "RIGHT"
+    -- Height information
+    lcd.drawText( 5, 17, "Max Hoehe", SMLSIZE)
+    lcd.drawText( 100, 17, string.format("%d m", AltP), SMLSIZE+RIGHT)
+    lcd.drawText( 5, 27, "Min Hoehe", SMLSIZE)
+    lcd.drawText( 100, 27, string.format("%d m", AltM), SMLSIZE+RIGHT)
+    lcd.drawText( 5, 37, "Up Thermik", SMLSIZE)
+    lcd.drawText( 100, 37, string.format("%d m", TAlt), SMLSIZE+RIGHT)
+    lcd.drawText( 5, 47, "Up Motor Flug", SMLSIZE)
+    lcd.drawText( 100, 47, string.format("%d m", MAFl), SMLSIZE+RIGHT)
+    lcd.drawText( 5, 57, "Up Motor Akku", SMLSIZE)
+    lcd.drawText( 100, 57, string.format("%d m", MAlt), SMLSIZE+RIGHT)
+  end
+
+
+  -- check Telemetry
   if getValue( 'RSSI') <= 1 then
-    lcd.drawText( 20, 20, "  Telemetrie verloren !!!  ", MIDSIZE+BLINK+INVERS)
+    lcd.drawText( 5, 15, "  Telemetrie verloren !!!  ", MIDSIZE+BLINK+INVERS)
   end
 end
 
