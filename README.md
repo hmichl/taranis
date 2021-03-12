@@ -1,5 +1,5 @@
 # taranis
-LUA Scripts for FrSKY Taranis Transmitter
+LUA Scripts for Telemetry-Screens on FrSKY Taranis Transmitters
 
 Collection of hopefully useful Telemetry Screen Scripts for the FrSKY Taranis X9D(+) and X-Lite Transmitter
 
