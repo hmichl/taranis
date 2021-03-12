@@ -1,12 +1,14 @@
 # taranis
 LUA Scripts for FrSKY Taranis Transmitter
 
-Collection of hopefully useful Telemetry Scripts for the FrSKY Taranis X9D(+) Transmitter
+Collection of hopefully useful Telemetry Screen Scripts for the FrSKY Taranis X9D(+) and X-Lite Transmitter
 
+## Taranis X9D(+)
 - e-segl.lua  for gliders with electric motor
 - moto.lua    for planes and helicopters with electric motor
 
-And these scripts are designed to work for the FrSKY Taranis X-Lite Transmitters
+## Taranis X-Lite
+And these scripts are designed to work for the FrSKY Taranis X-Lite Transmitters.
 Since the display is much smaller than the X9D display, each Telemetry-Screen can have up to four "subscreens". These can be viewed by long-clicking the joystick to one of the four directions.
 
 - xl-seg.lua  for gliders with electric motor
