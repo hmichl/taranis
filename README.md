@@ -2,6 +2,7 @@
 LUA Scripts for Telemetry-Screens on FrSKY Taranis Transmitters
 
 Collection of hopefully useful Telemetry Screen Scripts for the FrSKY Taranis X9D(+) and X-Lite Transmitter
+Texts within scripts are in German. The program-part inlcuding comments and documentation within the scripts is in English - so everybody being able to understand the scripts should be able to translate the outputs if necessary.
 
 ## Taranis X9D(+)
 - e-segl.lua  for gliders with electric motor
