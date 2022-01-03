@@ -15,3 +15,5 @@ Since the display is much smaller than the X9D display, each Telemetry-Screen ca
 - xl-seg.lua  for gliders with electric motor
   - subscreen 1 (up) : relevant data during flight
   - subscreen 2 (right) : data most probably to be checked after flight
+
+Last update 2022-01-03
